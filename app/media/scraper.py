@@ -69,7 +69,7 @@ class Scraper:
                     tmdbid = self.__get_tmdbid_from_nfo(file_nfo)
             else:
                 # 电视剧
-                tv_nfo = os.path.join(os.path.dirname(os.path.dirname(file)), "tvshow.nfo")
+                tv_nfo = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(file))), "tvshow.nfo")
                 if os.path.exists(tv_nfo):
                     tmdbid = self.__get_tmdbid_from_nfo(tv_nfo)
             if tmdbid and not force_nfo:
@@ -283,7 +283,7 @@ class Scraper:
             DomUtils.add_node(doc, root, "season", "-1")
             DomUtils.add_node(doc, root, "episode", "-1")
         # 保存
-        self.__save_nfo(doc, os.path.join(out_path, "tvshow.nfo"))
+        self.__save_nfo(doc, os.path.join(os.path.dirname(out_path), "tvshow.nfo"))
 
     def __gen_tv_season_nfo_file(self, seasoninfo: dict, season, out_path):
         """
@@ -312,7 +312,7 @@ class Scraper:
         # seasonnumber
         DomUtils.add_node(doc, root, "seasonnumber", season)
         # 保存
-        self.__save_nfo(doc, os.path.join(out_path, "season.nfo"))
+        self.__save_nfo(doc, os.path.join(os.path.dirname(out_path), "season.nfo"))
 
     def __gen_tv_episode_nfo_file(self,
                                   seasoninfo: dict,
@@ -540,7 +540,7 @@ class Scraper:
                 scraper_tv_pic = self._scraper_pic.get("tv")
                 # tv nfo
                 if force_nfo \
-                        or not os.path.exists(os.path.join(os.path.dirname(dir_path), "tvshow.nfo")):
+                        or not os.path.exists(os.path.join(os.path.dirname(os.path.dirname(dir_path)), "tvshow.nfo")):
                     if scraper_tv_nfo.get("basic") or scraper_tv_nfo.get("credits"):
                         # 查询Douban信息
                         if scraper_tv_nfo.get("credits") and scraper_tv_nfo.get("credits_chinese"):
@@ -590,7 +590,7 @@ class Scraper:
                 # season nfo
                 if scraper_tv_nfo.get("season_basic"):
                     if force_nfo \
-                            or not os.path.exists(os.path.join(dir_path, "season.nfo")):
+                            or not os.path.exists(os.path.join(os.path.dirname(dir_path), "season.nfo")):
                         # season nfo
                         seasoninfo = self.media.get_tmdb_tv_season_detail(tmdbid=media.tmdb_id,
                                                                           season=int(media.get_season_seq()))
