@@ -1,6 +1,8 @@
 import random
 from threading import Lock
 from time import sleep
+import sqlite3
+import os
 
 import zhconv
 
@@ -26,6 +28,8 @@ class DouBan:
 
     def __init__(self):
         self.init_config()
+        self.db_path = 'douban_data.db'  # 数据库文件路径
+        self.init_db()
 
     def init_config(self):
         self.doubanapi = DoubanApi()
@@ -37,11 +41,53 @@ class DouBan:
         except Exception as err:
             ExceptionUtils.exception_traceback(err)
             log.warn(f"【Douban】获取cookie失败：{format(err)}")
+            
+    def init_db(self):
+        """
+        初始化数据库，创建表
+        """
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS douban_details (
+                doubanid TEXT PRIMARY KEY,
+                data TEXT
+            )
+        ''')
+        conn.commit()
+        conn.close()
+
+    def get_douban_detail_from_db(self, doubanid):
+        """
+        从数据库获取豆瓣详情
+        """
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute("SELECT data FROM douban_details WHERE doubanid = ?", (doubanid,))
+        result = cursor.fetchone()
+        conn.close()
+        return result[0] if result else None
+
+    def save_douban_detail_to_db(self, doubanid, data):
+        """
+        将豆瓣详情存储到数据库
+        """
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute("INSERT OR REPLACE INTO douban_details (doubanid, data) VALUES (?, ?)", (doubanid, data))
+        conn.commit()
+        conn.close()
 
     def get_douban_detail(self, doubanid, mtype=None, wait=False):
         """
         根据豆瓣ID返回豆瓣详情，带休眠
         """
+        # 首先尝试从数据库获取数据
+        log.info("【Douban】正在通过本地数据库查询豆瓣详情：%s" % doubanid)
+        stored_data = self.get_douban_detail_from_db(doubanid)
+        if stored_data:
+            return stored_data
+        
         log.info("【Douban】正在通过API查询豆瓣详情：%s" % doubanid)
         # 随机休眠
         if wait:
@@ -67,6 +113,8 @@ class DouBan:
         if douban_info.get("title") == "未知电影" or douban_info.get("title") == "未知电视剧":
             return None
         log.info("【Douban】查询到数据：%s" % douban_info.get("title"))
+        # 将查询结果存储到数据库
+        self.save_douban_detail_to_db(doubanid, douban_info)
         return douban_info
 
     def __search_douban_id(self, metainfo):
