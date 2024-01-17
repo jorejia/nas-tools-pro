@@ -29,7 +29,7 @@ class DouBan:
 
     def __init__(self):
         self.init_config()
-        self.db_path = 'config/douban_data.db'  # 数据库文件路径
+        self.db_path = '../config/douban_data.db'  # 数据库文件路径
         self.init_db()
 
     def init_config(self):
