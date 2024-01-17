@@ -3,6 +3,7 @@ from threading import Lock
 from time import sleep
 import sqlite3
 import os
+import json
 
 import zhconv
 
@@ -28,7 +29,7 @@ class DouBan:
 
     def __init__(self):
         self.init_config()
-        self.db_path = 'douban_data.db'  # 数据库文件路径
+        self.db_path = 'config/douban_data.db'  # 数据库文件路径
         self.init_db()
 
     def init_config(self):
@@ -66,15 +67,16 @@ class DouBan:
         cursor.execute("SELECT data FROM douban_details WHERE doubanid = ?", (doubanid,))
         result = cursor.fetchone()
         conn.close()
-        return result[0] if result else None
+        return json.loads(result[0]) if result else None
 
     def save_douban_detail_to_db(self, doubanid, data):
         """
         将豆瓣详情存储到数据库
         """
+        data_json = json.dumps(data)  # 将字典转换为JSON字符串
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
-        cursor.execute("INSERT OR REPLACE INTO douban_details (doubanid, data) VALUES (?, ?)", (doubanid, data))
+        cursor.execute("INSERT OR REPLACE INTO douban_details (doubanid, data) VALUES (?, ?)", (doubanid, data_json))
         conn.commit()
         conn.close()
 
