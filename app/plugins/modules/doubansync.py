@@ -613,7 +613,9 @@ class DoubanSync(_IPluginModule):
                         continue_next_page = True
                         self.debug(f"开始解析第 {page_number} 页数据...")
                         try:
+                            self.warn(f"开始get_douban_wish")
                             items = self.douban.get_douban_wish(dtype=mtype, userid=user, start=start_number, wait=True)
+                            self.warn(f"拿到的{items}")
                             if not items:
                                 self.warn(f"第 {page_number} 页未获取到数据")
                                 break
