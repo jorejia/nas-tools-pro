@@ -216,7 +216,7 @@ class DouBan:
             return []
         for web_info in web_infos:
             web_info["id"] = web_info.get("url").split("/")[-2]
-        log.info("【debug】获取到" % web_infos)
+        log.info("【debug】获取到: %s" % web_infos)
         return web_infos
     
 

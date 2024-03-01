@@ -232,7 +232,7 @@ class DoubanWeb(object):
                     obj[key] = text[0]
             if obj:
                 result.append(obj)
-        log.info("【debug】__get_list" % result)
+        log.info("【debug】__get_list: %s" % result)
         return result
 
     @classmethod
