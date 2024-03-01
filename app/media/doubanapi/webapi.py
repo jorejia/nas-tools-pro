@@ -14,7 +14,7 @@ class DoubanWeb(object):
 
     _session = requests.Session()
 
-    _movie_base = "https://movie.douban.com"
+    _movie_base = "https://movie.douban.com:2443"
     _rss_base = "https://www.douban.com"
     _search_base = "https://search.douban.com"
     _page_limit = 50
