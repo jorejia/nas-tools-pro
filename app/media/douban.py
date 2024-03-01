@@ -216,13 +216,12 @@ class DouBan:
             return []
         for web_info in web_infos:
             web_info["id"] = web_info.get("url").split("/")[-2]
-        log.info("【debug】获取到: %s" % web_infos)
         return web_infos
     
 
     def get_user_info(self, userid, wait=False):
         if wait:
-            time = round(random.uniform(1, 5), 1)
+            time = round(random.uniform(5, 10), 1)
             log.info("【Douban】随机休眠：%s 秒" % time)
             sleep(time)
         return self.doubanweb.user(cookie=self.cookie, userid=userid)
