@@ -3,6 +3,7 @@ from functools import lru_cache
 import requests
 from lxml import etree
 import datetime
+import log
 
 from app.utils import RequestUtils, ExceptionUtils
 from app.utils.commons import singleton
@@ -231,6 +232,7 @@ class DoubanWeb(object):
                     obj[key] = text[0]
             if obj:
                 result.append(obj)
+        log.info("【debug】__get_list", result)
         return result
 
     @classmethod
