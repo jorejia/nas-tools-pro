@@ -598,7 +598,7 @@ class DoubanSync(_IPluginModule):
                 for mtype in self._types:
                     if not mtype:
                         continue
-                    self.info(f"开始获取 {user_name or user} 的 {mtype} 数据...")
+                    self.info(f"开始获取 {user} 的 {mtype} 数据...")
                     # 开始序号
                     start_number = 0
                     # 类型成功数量
@@ -640,10 +640,10 @@ class DoubanSync(_IPluginModule):
                                     user_type_succnum += 1
                                     user_succnum += 1
                             self.debug(
-                                f"{user_name or user} 第 {page_number} 页解析完成，共获取到 {sucess_urlnum} 个媒体")
+                                f"{user} 第 {page_number} 页解析完成，共获取到 {sucess_urlnum} 个媒体")
                         except Exception as err:
                             ExceptionUtils.exception_traceback(err)
-                            self.error(f"{user_name or user} 第 {page_number} 页解析出错：%s" % str(err))
+                            self.error(f"{user} 第 {page_number} 页解析出错：%s" % str(err))
                             break
                         # 继续下一页
                         if continue_next_page:
@@ -651,11 +651,11 @@ class DoubanSync(_IPluginModule):
                         else:
                             break
                     # 当前类型解析结束
-                    self.debug(f"用户 {user_name or user} 的 {mtype} 解析完成，共获取到 {user_type_succnum} 个媒体")
-                self.info(f"用户 {user_name or user} 解析完成，共获取到 {user_succnum} 个媒体")
+                    self.debug(f"用户 {user} 的 {mtype} 解析完成，共获取到 {user_type_succnum} 个媒体")
+                self.info(f"用户 {user} 解析完成，共获取到 {user_succnum} 个媒体")
             else:
                 all_items = self.douban.get_latest_douban_interests(dtype='all', userid=user, wait=True)
-                self.debug(f"开始解析 {user_name or user} 的数据...")
+                self.debug(f"开始解析 {user} 的数据...")
                 self.debug(f"共获取到 {len(all_items)} 条数据")
                 # 所有类型成功数量
                 user_succnum = 0
@@ -681,8 +681,8 @@ class DoubanSync(_IPluginModule):
                                 }
                             user_type_succnum += 1
                             user_succnum += 1
-                    self.debug(f"用户 {user_name or user} 的 {mtype} 解析完成，共获取到 {user_type_succnum} 个媒体")
-                self.debug(f"用户 {user_name or user} 解析完成，共获取到 {user_succnum} 个媒体")
+                    self.debug(f"用户 {user} 的 {mtype} 解析完成，共获取到 {user_type_succnum} 个媒体")
+                self.debug(f"用户 {user} 解析完成，共获取到 {user_succnum} 个媒体")
 
         self.info(f"所有用户解析完成，共获取到 {len(douban_ids)} 个媒体")
         # 查询豆瓣详情
