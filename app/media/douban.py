@@ -93,7 +93,7 @@ class DouBan:
         log.info("【Douban】正在通过API查询豆瓣详情：%s" % doubanid)
         # 随机休眠
         if wait:
-            time = round(random.uniform(10, 30), 1)
+            time = round(random.uniform(5, 10), 1)
             log.info("【Douban】随机休眠：%s 秒" % time)
             sleep(time)
         if mtype == MediaType.MOVIE:
