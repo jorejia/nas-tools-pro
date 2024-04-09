@@ -613,6 +613,13 @@ class DoubanSync(_IPluginModule):
                             break
                         # 解析豆瓣ID
                         for item in items:
+                            date = item.get("date")
+                            if not date:
+                                break
+                            else:
+                                mark_date = datetime.strptime(date, '%Y-%m-%d')
+                                if self._days and not (datetime.now() - mark_date).days < int(self._days):
+                                    break
                             doubanid = item.get("id")
                             if str(doubanid).isdigit():
                                 self.info("解析到媒体：%s" % doubanid)
