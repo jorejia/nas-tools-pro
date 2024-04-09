@@ -623,6 +623,8 @@ class DoubanSync(_IPluginModule):
                                 sucess_urlnum += 1
                                 user_type_succnum += 1
                                 user_succnum += 1
+                                if sucess_urlnum == 10:
+                                    break
                         self.debug(
                             f"{user} 第 {page_number} 页解析完成，共获取到 {sucess_urlnum} 个媒体")
                     except Exception as err:
