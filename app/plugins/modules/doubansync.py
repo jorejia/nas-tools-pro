@@ -509,7 +509,7 @@ class DoubanSync(_IPluginModule):
                                                                                 mediaid=f"DB:{media_info.douban_id}",
                                                                                 in_from=SearchType.DB)
                                 if code != 0:
-                                    self.error("%s 添加订阅失败：%s" % (media_info.title, msg))
+                                    self.error("%s %s 添加订阅失败：%s" % (media_info.title, media_info.year, msg))
                                     # 订阅已存在
                                     if code == 9:
                                         self.__update_history(media=media_info, state="RSS")
@@ -599,57 +599,37 @@ class DoubanSync(_IPluginModule):
                     if not mtype:
                         continue
                     self.info(f"开始获取 {user} 的 {mtype} 数据...")
-                    # 开始序号
-                    start_number = 0
                     # 类型成功数量
                     user_type_succnum = 0
-                    # 每一页
-                    while True:
-                        # 页数
-                        page_number = int(start_number / perpage_number + 1)
-                        # 当前页成功数量
-                        sucess_urlnum = 0
-                        # 是否继续下一页
-                        continue_next_page = True
-                        self.debug(f"开始解析第 {page_number} 页数据...")
-                        try:
-                            items = self.douban.get_douban_wish(dtype=mtype, userid=user, start=start_number, wait=True)
-                            if not items:
-                                self.warn(f"第 {page_number} 页未获取到数据")
-                                break
-                            # 解析豆瓣ID
-                            for item in items:
-                                # 时间范围
-                                date = item.get("date")
-                                if not date:
-                                    continue_next_page = False
-                                    break
-                                else:
-                                    mark_date = datetime.strptime(date, '%Y-%m-%d')
-                                    if self._days and not (datetime.now() - mark_date).days < int(self._days):
-                                        continue_next_page = False
-                                        break
-                                doubanid = item.get("id")
-                                if str(doubanid).isdigit():
-                                    self.info("解析到媒体：%s" % doubanid)
-                                    if doubanid not in douban_ids:
-                                        douban_ids[doubanid] = {
-                                            "user_name": user_name
-                                        }
-                                    sucess_urlnum += 1
-                                    user_type_succnum += 1
-                                    user_succnum += 1
-                            self.debug(
-                                f"{user} 第 {page_number} 页解析完成，共获取到 {sucess_urlnum} 个媒体")
-                        except Exception as err:
-                            ExceptionUtils.exception_traceback(err)
-                            self.error(f"{user} 第 {page_number} 页解析出错：%s" % str(err))
+                    # 页数
+                    page_number = 1
+                    # 当前页成功数量
+                    sucess_urlnum = 0
+                    self.debug(f"开始解析第 {page_number} 页数据...")
+                    try:
+                        items = self.douban.get_douban_wish(dtype=mtype, userid=user, start=start_number, wait=True)
+                        if not items:
+                            self.warn(f"第 {page_number} 页未获取到数据")
                             break
-                        # 继续下一页
-                        if continue_next_page:
-                            start_number += perpage_number
-                        else:
-                            break
+                        # 解析豆瓣ID
+                        for item in items:
+                            doubanid = item.get("id")
+                            if str(doubanid).isdigit():
+                                self.info("解析到媒体：%s" % doubanid)
+                                if doubanid not in douban_ids:
+                                    douban_ids[doubanid] = {
+                                        "user_name": user_name
+                                    }
+                                sucess_urlnum += 1
+                                user_type_succnum += 1
+                                user_succnum += 1
+                        self.debug(
+                            f"{user} 第 {page_number} 页解析完成，共获取到 {sucess_urlnum} 个媒体")
+                    except Exception as err:
+                        ExceptionUtils.exception_traceback(err)
+                        self.error(f"{user} 第 {page_number} 页解析出错：%s" % str(err))
+                        break
+
                     # 当前类型解析结束
                     self.debug(f"用户 {user} 的 {mtype} 解析完成，共获取到 {user_type_succnum} 个媒体")
                 self.info(f"用户 {user} 解析完成，共获取到 {user_succnum} 个媒体")
