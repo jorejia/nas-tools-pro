@@ -591,8 +591,8 @@ class DoubanSync(_IPluginModule):
                 user_name = userinfo.get("name")
 
             if self._sync_type == '0':
-                # 每页条数
-                perpage_number = 15
+                # 开始位置
+                start_number = 0
                 # 所有类型成功数量
                 user_succnum = 0
                 for mtype in self._types:
