@@ -502,7 +502,7 @@ class MetaVideoV2(MetaBase):
                     "周年", "纪念版", "白金", "特效", "首发", "原盘", "❀拨雪寻春❀", "喵萌奶茶屋", "熔岩动画",
                     "Xrip", "AKito秋人", "智械尚未危机制作", "jibaketa", "亿次研同好会", "VARYG", "B站小鱼儿呼唤爱",
                     "hchcsen", "niizk", "Xeon晚生", "氢气烤肉架", "7³ACG", "LittleBakas", "FSD粉羽社", "一只出格君",
-                    "OPFans枫雪动漫"]
+                    "OPFans枫雪动漫", "Sakurato"]
 
         match = re.search(pattern, title, re.IGNORECASE)
         if not match:
