@@ -148,7 +148,7 @@ class DoubanApi(object):
         "api-client/1 com.douban.frodo/7.3.0(207) Android/22 product/MI 9 vendor/Xiaomi model/MI 9 brand/Android  rom/miui6  network/wifi platform/mobile nd/1"]
     _api_secret_key = "bf7dddc7c9cfe6f7"
     _api_key = "054022eaeae0b00e0fc068c0c0a2102a"
-    _base_url = "https://frodo.douban.com/api/v2"
+    _base_url = "https://frodo.douban.com:2443/api/v2"
     _session = requests.Session()
 
     def __init__(self):
