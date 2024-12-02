@@ -180,7 +180,7 @@ class DouBan:
         获取最新动态中的想看/在看/看过数据
         """
         if wait:
-            time = round(random.uniform(1, 5), 1)
+            time = round(random.uniform(10, 15), 1)
             log.info("【Douban】随机休眠：%s 秒" % time)
             sleep(time)
         if dtype == "do":
@@ -203,7 +203,7 @@ class DouBan:
         获取豆瓣想看列表数据
         """
         if wait:
-            time = round(random.uniform(5, 10), 1)
+            time = round(random.uniform(10, 15), 1)
             log.info("【Douban】随机休眠：%s 秒" % time)
             sleep(time)
         if dtype == "do":
@@ -221,7 +221,7 @@ class DouBan:
 
     def get_user_info(self, userid, wait=False):
         if wait:
-            time = round(random.uniform(5, 10), 1)
+            time = round(random.uniform(10, 15), 1)
             log.info("【Douban】随机休眠：%s 秒" % time)
             sleep(time)
         return self.doubanweb.user(cookie=self.cookie, userid=userid)

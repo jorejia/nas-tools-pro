@@ -684,7 +684,7 @@ class DoubanSync(_IPluginModule):
                 if not douban_info:
                     self.warn("%s 无权限访问，需要配置豆瓣Cookie" % doubanid)
                     # 随机休眠
-                    sleep(round(random.uniform(1, 5), 1))
+                    sleep(round(random.uniform(5, 10), 1))
                     continue
             media_type = MediaType.TV if douban_info.get("episodes_count") else MediaType.MOVIE
             self.info("%s：%s %s".strip() % (media_type.value, douban_info.get("title"), douban_info.get("year")))
@@ -700,7 +700,7 @@ class DoubanSync(_IPluginModule):
             if meta_info not in media_list:
                 media_list.append(meta_info)
             # 随机休眠
-            sleep(round(random.uniform(1, 5), 1))
+            sleep(round(random.uniform(5, 10), 1))
         return media_list
 
     def stop_service(self):
